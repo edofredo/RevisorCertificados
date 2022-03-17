@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pdfManagers;
+package pruebas;
 
 import certificados.Anemometros.IDRType000;
 import certificados.Anemometros.DWGType000;
@@ -25,7 +25,7 @@ public class Pruebas {
         //pruebaIDR();
         //pruebaWG();
         //pruebaLufftM();
-        pruebaLufftTH();
+        //pruebaLufftTH();
         
     }
     

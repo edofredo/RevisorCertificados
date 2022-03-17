@@ -15,6 +15,9 @@ import model.Sensor;
 import certificates.General.DataParser;
 import certificates.General.Laboratory;
 import certificados.Anemometros.IDRType000;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,8 +42,9 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     public GUICalibrationCertificates() {
         initComponents();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        DataParser sensor = new AC6THLufftWs300();
-        populateTable(sensor);
+        //DataParser sensor = new AC6THLufftWs300();
+        //populateTable(sensor);
+        
     }
 
     /**
@@ -55,6 +59,15 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCalData = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jCBLaboratory = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jCBSensorType = new javax.swing.JComboBox<>();
+        jLabelPath = new javax.swing.JLabel();
+        jButtonPath = new javax.swing.JButton();
+        jButtonGetData = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,11 +85,111 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 789, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+        );
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("  Calibration laboratory");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel1.setFocusable(false);
+        jLabel1.setMinimumSize(new java.awt.Dimension(200, 18));
+        jLabel1.setPreferredSize(new java.awt.Dimension(108, 18));
+
+        jCBLaboratory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select laboratory", "IDR", "DWG", "AC6" }));
+        jCBLaboratory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBLaboratoryActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("  Sensor type");
+        jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel2.setFocusable(false);
+        jLabel2.setMinimumSize(new java.awt.Dimension(200, 18));
+        jLabel2.setPreferredSize(new java.awt.Dimension(108, 18));
+
+        jCBSensorType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select sensor", "" }));
+        jCBSensorType.setEnabled(false);
+        jCBSensorType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBSensorTypeActionPerformed(evt);
+            }
+        });
+
+        jLabelPath.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jButtonPath.setText("Path");
+        jButtonPath.setEnabled(false);
+        jButtonPath.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPathActionPerformed(evt);
+            }
+        });
+
+        jButtonGetData.setText("Get calibration data");
+        jButtonGetData.setEnabled(false);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("  Certificates path");
+        jLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel3.setFocusable(false);
+        jLabel3.setMinimumSize(new java.awt.Dimension(200, 18));
+        jLabel3.setPreferredSize(new java.awt.Dimension(108, 18));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jCBSensorType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonPath, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCBLaboratory, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonGetData))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(jLabelPath, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCBLaboratory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCBSensorType, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonPath, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonGetData, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPath, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -85,19 +198,64 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCBLaboratoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBLaboratoryActionPerformed
+        int selection = jCBLaboratory.getSelectedIndex();
+        if (selection == 0) {
+            jCBSensorType.removeAllItems();
+            jCBSensorType.setEnabled(false);
+            jButtonGetData.setEnabled(false);
+            jCBSensorType.addItem("Select sensor");
+        } else if (selection == 1) {
+            jCBSensorType.removeAllItems();
+            jCBSensorType.setEnabled(true);
+            jCBSensorType.addItem("Select sensor");
+            jCBSensorType.addItem("TFCA .000");
+        } else if (selection == 2) {
+            jCBSensorType.removeAllItems();
+            jCBSensorType.setEnabled(true);
+            jCBSensorType.addItem("Select sensor");
+            jCBSensorType.addItem("TFCA .000");
+            jCBSensorType.addItem("TFCA .400");
+        } else if (selection == 3) {
+            jCBSensorType.removeAllItems();
+            jCBSensorType.setEnabled(true);
+            jCBSensorType.addItem("Select sensor");
+            jCBSensorType.addItem("Lufft WS 300 Barometer");
+            jCBSensorType.addItem("Lufft WS 300 ThermoHygrometer");
+        }
+
+    }//GEN-LAST:event_jCBLaboratoryActionPerformed
+
+    private void jCBSensorTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBSensorTypeActionPerformed
+        if(jCBSensorType.getSelectedIndex()!=0)
+        jButtonPath.setEnabled(true);
+        else {
+            jButtonPath.setEnabled(false);
+            jButtonGetData.setEnabled(false);
+        }
+    }//GEN-LAST:event_jCBSensorTypeActionPerformed
+
+    private void jButtonPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathActionPerformed
+        fileChooser();
+    }//GEN-LAST:event_jButtonPathActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,11 +318,37 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
                 defaultTableModel.addRow(sensorsForTable);
             }
         }
+               
+    }
+    
+    private void fileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
+        //FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+        //fileChooser.setFileFilter(imgFilter);
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result != JFileChooser.CANCEL_OPTION) {
+
+            File folderName = fileChooser.getSelectedFile();
+            jLabelPath.setText(folderName.toString());
+            jButtonGetData.setEnabled(true);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonGetData;
+    private javax.swing.JButton jButtonPath;
+    private javax.swing.JComboBox<String> jCBLaboratory;
+    private javax.swing.JComboBox<String> jCBSensorType;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelPath;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCalData;
     // End of variables declaration//GEN-END:variables
