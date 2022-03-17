@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import model.Sensor;
-import model.SensorType;
+import certificates.General.DataParser;
 
 /**
  *

@@ -15,13 +15,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import model.SensorType;
+import certificates.General.DataParser;
 
 /**
  *
  * @author CRA
  */
-public class WindguardType000 implements SensorType {
+public class WindguardType000 implements DataParser {
 
     private String serialNumber;
     private String slope;

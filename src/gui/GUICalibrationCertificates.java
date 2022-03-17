@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Sensor;
-import model.SensorType;
+import certificates.General.DataParser;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +36,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
      */
     public GUICalibrationCertificates() {
         initComponents();
-        SensorType sensor = new AC6ThermoHygroLufftWS300();
+        DataParser sensor = new AC6ThermoHygroLufftWS300();
         populateTable(sensor);
     }
 
@@ -131,7 +131,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         });
     }
 
-    private void populateTable(SensorType sensorType) {
+    private void populateTable(DataParser sensorType) {
         ArrayList<Sensor> sensorList = null;
 
         defaultTableModel = (DefaultTableModel) jTableCalData.getModel();

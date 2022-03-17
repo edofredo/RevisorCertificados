@@ -15,13 +15,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import model.SensorType;
+import certificates.General.DataParser;
 
 /**
  *
  * @author CRA
  */
-public class AC6ThermoHygroLufftWS300 implements SensorType {
+public class AC6ThermoHygroLufftWS300 implements DataParser {
 
     private String serialNumber;
     private String slope;

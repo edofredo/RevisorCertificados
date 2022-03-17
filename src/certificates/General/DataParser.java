@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package certificates.General;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import model.Sensor;
 
 /**
  *
  * @author Cristian
  */
-public interface SensorType {
+public interface DataParser {
     public ArrayList<Sensor> parser() throws IOException;
 }
