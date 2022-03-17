@@ -5,12 +5,16 @@
  */
 package model;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author CRA
  */
 public class Sensor {
     
+    private String measurand;
+    private String laboratory;
     private String serialNumber;
     private String slope;
     private String offset;
@@ -19,15 +23,33 @@ public class Sensor {
 
     public Sensor() {
     }
-       
-    public Sensor(String slope, String offset, String serial, String date, double uncert) {
+    
+    public Sensor(String measurand, String laboratory, String serialNumber, String slope, String offset, String calibrationDate, double uncertainty) {
+        this.measurand = measurand;
+        this.laboratory = laboratory;
+        this.serialNumber = serialNumber;
         this.slope = slope;
         this.offset = offset;
-        this.serialNumber = serial;
-        this.calibrationDate = date;
-        this.uncertainty = uncert;
-    }   
+        this.calibrationDate = calibrationDate;
+        this.uncertainty = uncertainty;
+    }
+
+    public String getLaboratory() {
+        return laboratory;
+    }
+
+    public void setLaboratory(String laboratory) {
+        this.laboratory = laboratory;
+    }
     
+    public String getMeasurand() {
+        return measurand;
+    }
+
+    public void setMeasurand(String measurand) {
+        this.measurand = measurand;
+    }
+            
     public String getSlope() {
         return slope;
     }
@@ -44,27 +66,29 @@ public class Sensor {
         this.offset = offset;
     }
 
-    public String getSerial() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerial(String serial) {
+    public void setSerialNumber(String serial) {
         this.serialNumber = serial;
     }
 
-    public String getDate() {
+    public String getCalibrationDate() {
         return calibrationDate;
     }
 
-    public void setDate(String date) {
+    public void setCalibrationDate(String date) {
         this.calibrationDate = date;
-    }
-
-    public double getUncert() {
+    }   
+    
+    public double getUncertainty() {
         return uncertainty;
     }
 
-    public void setUncert(double uncert) {
-        this.uncertainty = uncert;
+    public void setUncertainty(double uncert) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        double u = Double.parseDouble(df.format(uncert));
+        this.uncertainty = u;
     }
 }

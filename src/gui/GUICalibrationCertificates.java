@@ -2,9 +2,9 @@ package gui;
 
 
 import certificados.Anemometros.IDRType000;
-import certificados.Anemometros.WindguardType000;
-import certificados.LufftWs300.AC6ManoLufftWS300;
-import certificados.LufftWs300.AC6ThermoHygroLufftWS300;
+import certificados.Anemometros.DWGType000;
+import certificados.LufftWs300.AC6BaroLufftWs300;
+import certificados.LufftWs300.AC6THLufftWs300;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Sensor;
 import certificates.General.DataParser;
+import certificates.General.Laboratory;
+import certificados.Anemometros.IDRType000;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,7 +38,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
      */
     public GUICalibrationCertificates() {
         initComponents();
-        DataParser sensor = new AC6ThermoHygroLufftWS300();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        DataParser sensor = new AC6THLufftWs300();
         populateTable(sensor);
     }
 
@@ -59,7 +62,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             new Object [][] {},
 
             new String [] {
-                "Measurand","Serial", "Slope", "Offset", "CalDate", "Uncert"
+                "Measurand", "Laboratory", "Serial", "Slope", "Offset", "CalDate", "Uncert"
             }
         ));
         jTableCalData.setCellSelectionEnabled(true);
@@ -131,13 +134,13 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         });
     }
 
-    private void populateTable(DataParser sensorType) {
+    private void populateTable(DataParser certificateData) {
         ArrayList<Sensor> sensorList = null;
 
         defaultTableModel = (DefaultTableModel) jTableCalData.getModel();
 
         try {
-            sensorList = sensorType.parser();
+            sensorList = certificateData.parser();
         } catch (IOException ex) {
             Logger.getLogger(GUICalibrationCertificates.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,7 +154,9 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         } else {
 
             for (Sensor a : sensorList) {
-                sensorsForTable = new Object[]{a.getSerial(), a.getSlope(), a.getOffset(), a.getDate(), a.getUncert()};
+                sensorsForTable = new Object[]{a.getMeasurand(), a.getLaboratory(), 
+                    a.getSerialNumber(), a.getSlope(), a.getOffset(), 
+                    a.getCalibrationDate(), a.getUncertainty()};
                 defaultTableModel.addRow(sensorsForTable);
             }
         }

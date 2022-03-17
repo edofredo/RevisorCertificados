@@ -14,14 +14,8 @@ import pdfManagers.PDFManager;
  *
  * @author Cristian
  */
-public abstract class ParserLaboratorySensorType {
-    
-    private String serialNumber;
-    private String slope;
-    private String offset;
-    private String calibrationDate;
-    private double uncertainty;
-    
+public class Laboratory {
+           
     private String laboratorioCalibracion;
     private String marcaSensor;
     private String modeloSensor;
@@ -34,48 +28,7 @@ public abstract class ParserLaboratorySensorType {
     private ArrayList<Sensor> sensorList = new ArrayList<>();
     private Sensor sensor;
 
-    public abstract ArrayList<Sensor> parser() throws IOException;    
-    
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getSlope() {
-        return slope;
-    }
-
-    public void setSlope(String slope) {
-        this.slope = slope;
-    }
-
-    public String getOffset() {
-        return offset;
-    }
-
-    public void setOffset(String offset) {
-        this.offset = offset;
-    }
-
-    public String getCalibrationDate() {
-        return calibrationDate;
-    }
-
-    public void setCalibrationDate(String calibrationDate) {
-        this.calibrationDate = calibrationDate;
-    }
-
-    public double getUncertainty() {
-        return uncertainty;
-    }
-
-    public void setUncertainty(double uncertainty) {
-        this.uncertainty = uncertainty;
-    }
-
+            
     public String getLaboratorioCalibracion() {
         return laboratorioCalibracion;
     }
@@ -133,6 +86,7 @@ public abstract class ParserLaboratorySensorType {
     }
 
     public ArrayList<Sensor> getSensorList() {
+        sensorList = new ArrayList<>();
         return sensorList;
     }
 
@@ -141,6 +95,7 @@ public abstract class ParserLaboratorySensorType {
     }
 
     public Sensor getSensor() {
+        sensor = new Sensor();
         return sensor;
     }
 

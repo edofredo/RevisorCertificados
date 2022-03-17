@@ -66,7 +66,7 @@
             <Component class="javax.swing.JTable" name="jTableCalData">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {},&#xa;&#xa;    new String [] {&#xa;        &quot;Measurand&quot;,&quot;Serial&quot;, &quot;Slope&quot;, &quot;Offset&quot;, &quot;CalDate&quot;, &quot;Uncert&quot;&#xa;    }&#xa;)" type="code"/>
+                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {},&#xa;&#xa;    new String [] {&#xa;        &quot;Measurand&quot;, &quot;Laboratory&quot;, &quot;Serial&quot;, &quot;Slope&quot;, &quot;Offset&quot;, &quot;CalDate&quot;, &quot;Uncert&quot;&#xa;    }&#xa;)" type="code"/>
                 </Property>
                 <Property name="cellSelectionEnabled" type="boolean" value="true"/>
               </Properties>
