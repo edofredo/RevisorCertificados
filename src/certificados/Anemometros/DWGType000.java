@@ -29,11 +29,12 @@ public class DWGType000 implements DataParser {
     private PDFManager pdfManager;
     private String absolutePath;
     private String filePath;
-
+    private String guiPath;
+    
     @Override
     public ArrayList<Sensor> parser() throws IOException {
 
-        File file = new File("D:\\50_DAM\\01_SegundoCurso\\06_Proyecto\\02_CertificadosCalibracion\\Prueba\\Windguard\\Type000");
+        File file = new File(guiPath);
         String[] pathNames = file.list();
 
         for (String s : pathNames) {
@@ -62,8 +63,12 @@ public class DWGType000 implements DataParser {
                 sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);                
 
                 sensorList.add(sensor);
-                
-                Path copy = Paths.get(absolutePath + "DWG_" + sensor.getSerialNumber() + "_Type000.pdf");
+                String newPath = absolutePath+"DWG"+File.separator;
+                File newFolder = new File(newPath);
+                if (!newFolder.exists()){
+                    newFolder.mkdirs();
+                }
+                Path copy = Paths.get(newPath + "DWG_" + sensor.getSerialNumber() + "_Type000.pdf");
                 Path original = Paths.get(filePath);
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
 
@@ -80,4 +85,53 @@ public class DWGType000 implements DataParser {
         return sensorList;
 
     }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    public ArrayList<Sensor> getSensorList() {
+        return sensorList;
+    }
+
+    public void setSensorList(ArrayList<Sensor> sensorList) {
+        this.sensorList = sensorList;
+    }
+
+    public PDFManager getPdfManager() {
+        return pdfManager;
+    }
+
+    public void setPdfManager(PDFManager pdfManager) {
+        this.pdfManager = pdfManager;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getGuiPath() {
+        return guiPath;
+    }
+
+    public void setGuiPath(String guiPath) {
+        this.guiPath = guiPath;
+    }
+    
 }

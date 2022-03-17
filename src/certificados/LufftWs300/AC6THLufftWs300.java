@@ -31,11 +31,11 @@ public class AC6THLufftWs300 implements DataParser {
     private PDFManager pdfManager;
     private String absolutePath;
     private String filePath;
+    private String guiPath;
     
     @Override
     public ArrayList<Sensor> parser() throws IOException{
-        File file = new File("D:\\50_DAM\\01_SegundoCurso\\06_Proyecto\\"
-                + "02_CertificadosCalibracion\\Prueba\\AC6\\TypeLufftTH");
+        File file = new File(guiPath);
         String[] pathNames = file.list();
         for(String s : pathNames){
         sensor = new Sensor();
@@ -126,13 +126,66 @@ public class AC6THLufftWs300 implements DataParser {
         sensor.setUncertainty(resultadoH[3]);      
         sensorList.add(sensor);
         
-        Path copy = Paths.get(absolutePath+"AC6_" + 
-                sensor.getSerialNumber() + "_TermoHygroLufftWS300.pdf");
+        String newPath = absolutePath+"AC6THLufft"+File.separator;
+        File newFolder = new File(newPath);
+        if (!newFolder.exists()){
+            newFolder.mkdirs();
+        }
+        Path copy = Paths.get(newPath + sensor.getSerialNumber() + "_TermoHygroLufftWS300.pdf");
         Path original = Paths.get(filePath);
         Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
         
         }
         return sensorList;
     }
+
+    public DecimalFormat getDf() {
+        return df;
+    }
+
+    public void setDf(DecimalFormat df) {
+        this.df = df;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    public PDFManager getPdfManager() {
+        return pdfManager;
+    }
+
+    public void setPdfManager(PDFManager pdfManager) {
+        this.pdfManager = pdfManager;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getGuiPath() {
+        return guiPath;
+    }
+
+    public void setGuiPath(String guiPath) {
+        this.guiPath = guiPath;
+    }
+    
     
 }

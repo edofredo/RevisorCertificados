@@ -87,7 +87,7 @@ public class Sensor {
     }
 
     public void setUncertainty(double uncert) {
-        DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat df = new DecimalFormat("0.0000");
         double u = Double.parseDouble(df.format(uncert));
         this.uncertainty = u;
     }
