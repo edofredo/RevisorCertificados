@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package certificados.LufftWs300;
+package laboratoryAC6;
 
-import pdfManagers.PDFManager;
+import dataExtractorService.PDFManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,8 +15,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import certificates.General.DataParser;
-import java.text.DecimalFormat;
+import dataExtractorService.DataParser;
 
 /**
  *
@@ -24,9 +23,9 @@ import java.text.DecimalFormat;
  */
 public class AC6THLufftWs300 implements DataParser {
 
-    DecimalFormat df = new DecimalFormat("0.00");
     private Sensor sensor;
     private final ArrayList<Sensor> sensorList = new ArrayList<>();
+    private ArrayList<String> certificateErrorPaths = new ArrayList<>();
 
     private PDFManager pdfManager;
     private String absolutePath;
@@ -37,11 +36,11 @@ public class AC6THLufftWs300 implements DataParser {
     public ArrayList<Sensor> parser() throws IOException {
         File file = new File(guiPath);
         String[] pathNames = file.list();
-        for (String s : pathNames) {
+        for (String fileName : pathNames) {
             sensor = new Sensor();
             pdfManager = new PDFManager();
             absolutePath = file.getAbsolutePath() + File.separator;
-            filePath = file.getAbsolutePath() + File.separator + s;
+            filePath = file.getAbsolutePath() + File.separator + fileName;
             pdfManager.setFilePath(filePath);
 
             try {
@@ -134,19 +133,12 @@ public class AC6THLufftWs300 implements DataParser {
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (Exception e) {
+                certificateErrorPaths.add(fileName);
                 System.out.println("Certificate type error: " + e.getMessage());
             }
 
         }
         return sensorList;
-    }
-
-    public DecimalFormat getDf() {
-        return df;
-    }
-
-    public void setDf(DecimalFormat df) {
-        this.df = df;
     }
 
     public Sensor getSensor() {
@@ -189,4 +181,9 @@ public class AC6THLufftWs300 implements DataParser {
         this.guiPath = guiPath;
     }
 
+     @Override
+    public ArrayList<String> getCertificateErrorPaths() throws IOException {
+        return certificateErrorPaths;
+    }
+    
 }

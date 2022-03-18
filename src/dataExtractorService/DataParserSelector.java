@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package certificates.General;
+package dataExtractorService;
 
-import certificados.Anemometros.DWGType000;
-import certificados.Anemometros.DWGType400;
-import certificados.Anemometros.IDRType000;
-import certificados.LufftWs300.AC6BaroLufftWs300;
-import certificados.LufftWs300.AC6THLufftWs300;
+import laboratoryDWG.DWGType000;
+import laboratoryDWG.DWGType400;
+import laboratoryIDR.IDRType000;
+import laboratoryAC6.AC6BaroLufftWs300;
+import laboratoryAC6.AC6THLufftWs300;
 
 /**
  *
  * @author Cristian
  */
-public class DataParserSelection {
+public class DataParserSelector {
     
     private int laboratorySelection;
     private int sensorSelection;
@@ -23,7 +23,7 @@ public class DataParserSelection {
 
     private DataParser dataparser;
     
-    public DataParserSelection(int laboratorySelection, int sensorSelection, String path) {
+    public DataParserSelector(int laboratorySelection, int sensorSelection, String path) {
         this.laboratorySelection = laboratorySelection;
         this.sensorSelection = sensorSelection;
         this.path = path;

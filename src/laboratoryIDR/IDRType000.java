@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package certificados.Anemometros;
+package laboratoryIDR;
 
-import pdfManagers.PDFManager;
+import dataExtractorService.PDFManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,75 +15,73 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import certificates.General.DataParser;
+import dataExtractorService.DataParser;
 
 /**
  *
  * @author CRA
  */
-public class DWGType400 implements DataParser {
-       
+public class IDRType000 implements DataParser {
+
     private Sensor sensor;
     private ArrayList<Sensor> sensorList = new ArrayList<>();
-    
+    private ArrayList<String> certificateErrorPaths = new ArrayList<>();
+
     private PDFManager pdfManager;
     private String absolutePath;
     private String filePath;
     private String guiPath;
-    
+
     @Override
     public ArrayList<Sensor> parser() throws IOException {
 
         File file = new File(guiPath);
         String[] pathNames = file.list();
 
-        for (String s : pathNames) {
+        for (String fileName : pathNames) {
 
             sensor = new Sensor();
             pdfManager = new PDFManager();
             absolutePath = file.getAbsolutePath() + File.separator;
-            filePath = file.getAbsolutePath() + File.separator + s;
+            filePath = file.getAbsolutePath() + File.separator + fileName;
             pdfManager.setFilePath(filePath);
 
             try {
 
-                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 300, 500).split("\n");
+                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 350, 400).split("\n");
 
-                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 170, 220, 50, 400).split("\n");
+                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 350, 50, 230).split("\n");
                 Arrays.sort(tablaUncert);
-                
-                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 300, 400, 150, 120).split("\n");
-               
+
+                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 160, 300, 80, 80).split("\n");
+
                 sensor.setMeasurand("Windspeed");
-                sensor.setLaboratory(datos[2].substring(0, 18).trim());
-                sensor.setSerialNumber(datos[14].substring(14, 23).trim());
-                sensor.setCalibrationDate(datos[24].substring(20, 31).trim());
+                sensor.setLaboratory(datos[4].substring(54, 63).trim());
+                sensor.setSerialNumber(datos[15].substring(14, 23).trim());
+                sensor.setCalibrationDate(datos[20].substring(20, 37).trim());
                 sensor.setSlope(tablaSlopOff[0].substring(0, 7));
-                sensor.setOffset(tablaSlopOff[1].substring(0, 6));
-                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);                
+                sensor.setOffset(tablaSlopOff[1].substring(0, 7));
+                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
 
                 sensorList.add(sensor);
-                String newPath = absolutePath+"DWG"+File.separator;
+
+                String newPath = absolutePath + "IDR" + File.separator;
                 File newFolder = new File(newPath);
-                if (!newFolder.exists()){
+                if (!newFolder.exists()) {
                     newFolder.mkdirs();
                 }
-                Path copy = Paths.get(newPath + "DWG_" + sensor.getSerialNumber() + "_Type000.pdf");
+                Path copy = Paths.get(newPath + "IDR_" + sensor.getSerialNumber() + "_Type000.pdf");
                 Path original = Paths.get(filePath);
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
-
             } catch (Exception e) {
+                certificateErrorPaths.add(fileName);
                 System.out.println("Certificate type error: " + e.getMessage());
             }
-            
         }
-
         for (Sensor s : sensorList) {
             System.out.println(s.getSerialNumber());
         }
-
         return sensorList;
-
     }
 
     public Sensor getSensor() {
@@ -133,5 +131,10 @@ public class DWGType400 implements DataParser {
     public void setGuiPath(String guiPath) {
         this.guiPath = guiPath;
     }
-    
+
+    @Override
+    public ArrayList<String> getCertificateErrorPaths() throws IOException {
+        return certificateErrorPaths;
+    }
+
 }

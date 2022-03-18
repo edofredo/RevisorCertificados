@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package certificados.Anemometros;
+package laboratoryAC6;
 
-import pdfManagers.PDFManager;
+import dataExtractorService.PDFManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,16 +15,16 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import certificates.General.DataParser;
+import dataExtractorService.DataParser;
 
 /**
  *
  * @author CRA
  */
-public class IDRType000 implements DataParser {
+public class AC6BaroLufftWs300 implements DataParser {
 
     private Sensor sensor;
-    private ArrayList<Sensor> sensorList = new ArrayList<>();
+    private final ArrayList<Sensor> sensorList = new ArrayList<>();
     private ArrayList<String> certificateErrorPaths = new ArrayList<>();
 
     private PDFManager pdfManager;
@@ -34,52 +34,65 @@ public class IDRType000 implements DataParser {
 
     @Override
     public ArrayList<Sensor> parser() throws IOException {
-
         File file = new File(guiPath);
         String[] pathNames = file.list();
 
-        for (String s : pathNames) {
+        for (String fileName : pathNames) {
 
             sensor = new Sensor();
             pdfManager = new PDFManager();
             absolutePath = file.getAbsolutePath() + File.separator;
-            filePath = file.getAbsolutePath() + File.separator + s;
+            filePath = file.getAbsolutePath() + File.separator + fileName;
             pdfManager.setFilePath(filePath);
 
             try {
 
-                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 350, 400).split("\n");
+                String[] calibrationData = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 0, 500, 600).split("\n");
 
-                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 350, 50, 230).split("\n");
-                Arrays.sort(tablaUncert);
+                double[] incertidumbre = new double[5];
+                String[] datosIncertidumbre = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 350, 300, 100, 120).split("\n");
+                for (int i = 0; i <= datosIncertidumbre.length - 1; i++) {
+                    double dato = Double.parseDouble(datosIncertidumbre[i].replace(",", "."));
+                    incertidumbre[i] = dato;
+                }
 
-                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 160, 300, 80, 80).split("\n");
+                double[] correccion = new double[5];
+                String[] datosCorreccion = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 300, 50, 140).split("\n");
+                for (int i = 0; i <= datosCorreccion.length - 1; i++) {
+                    double dato = Math.abs(Double.parseDouble(datosCorreccion[i].replace(",", ".")));
+                    correccion[i] = dato;
+                }
 
-                sensor.setMeasurand("Windspeed");
-                sensor.setLaboratory(datos[4].substring(54, 63).trim());
-                sensor.setSerialNumber(datos[15].substring(14, 23).trim());
-                sensor.setCalibrationDate(datos[20].substring(20, 37).trim());
-                sensor.setSlope(tablaSlopOff[0].substring(0, 7));
-                sensor.setOffset(tablaSlopOff[1].substring(0, 7));
-                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
+                double[] resultado = new double[5];
+                for (int i = 0; i <= incertidumbre.length - 1; i++) {
+                    resultado[i] = correccion[i] + incertidumbre[i];
+                }
+                Arrays.sort(resultado);
+
+                sensor.setMeasurand("Barometer");
+                sensor.setLaboratory(calibrationData[7].substring(0, 3).trim());
+                sensor.setSerialNumber(calibrationData[19].substring(15, 32).trim());
+                sensor.setOffset("0");
+                sensor.setCalibrationDate(calibrationData[24].substring(21, 42).trim());
+                sensor.setSlope("1");
+                sensor.setUncertainty(resultado[4]);
 
                 sensorList.add(sensor);
 
-                String newPath = absolutePath + "IDR" + File.separator;
+                String newPath = absolutePath + "AC6BaroLufft" + File.separator;
                 File newFolder = new File(newPath);
                 if (!newFolder.exists()) {
                     newFolder.mkdirs();
                 }
-                Path copy = Paths.get(newPath + "IDR_" + sensor.getSerialNumber() + "_Type000.pdf");
+                Path copy = Paths.get(newPath + "AC6_" + sensor.getSerialNumber() + "BaroLufftWs300.pdf");
                 Path original = Paths.get(filePath);
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
+
             } catch (Exception e) {
-                certificateErrorPaths.add(filePath);
+                certificateErrorPaths.add(fileName);
                 System.out.println("Certificate type error: " + e.getMessage());
             }
-        }
-        for (Sensor s : sensorList) {
-            System.out.println(s.getSerialNumber());
+
         }
         return sensorList;
     }
@@ -90,14 +103,6 @@ public class IDRType000 implements DataParser {
 
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
-    }
-
-    public ArrayList<Sensor> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(ArrayList<Sensor> sensorList) {
-        this.sensorList = sensorList;
     }
 
     public PDFManager getPdfManager() {
@@ -132,9 +137,9 @@ public class IDRType000 implements DataParser {
         this.guiPath = guiPath;
     }
 
-    @Override
+     @Override
     public ArrayList<String> getCertificateErrorPaths() throws IOException {
         return certificateErrorPaths;
     }
-
+    
 }

@@ -5,8 +5,8 @@
  */
 package gui;
 
-import certificados.Anemometros.DWGType400;
-import certificates.General.DataParser;
+import laboratoryDWG.DWGType400;
+import dataExtractorService.DataParser;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Cristian
  */
-public class Pruebas {
+public class Tests {
 
     /**
      * @param args the command line arguments
@@ -26,7 +26,7 @@ public class Pruebas {
         try {
             d.parser();
         } catch (IOException ex) {
-            Logger.getLogger(Pruebas.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Tests.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 */  

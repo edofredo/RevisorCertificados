@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -8,9 +7,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Sensor;
-import certificates.General.DataParser;
-import certificates.General.DataParserSelection;
+import dataExtractorService.DataParser;
+import dataExtractorService.DataParserSelector;
 import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 /*
@@ -33,7 +33,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     private int laboratorySelection;
     private int sensorSelection;
     private String path;
-    
+
     /**
      * Creates new form GUICalibrationCertificates
      */
@@ -43,7 +43,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         configureApplicationWindow();
         //DataParser sensor = new AC6THLufftWs300();
         //populateTable(sensor);
-        
+
     }
 
     /**
@@ -55,10 +55,10 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanelTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCalData = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        jPanelUserInput = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jCBLaboratory = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -69,6 +69,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jTableCalData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -80,22 +81,22 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         jTableCalData.setCellSelectionEnabled(true);
         jScrollPane1.setViewportView(jTableCalData);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelTableLayout = new javax.swing.GroupLayout(jPanelTable);
+        jPanelTable.setLayout(jPanelTableLayout);
+        jPanelTableLayout.setHorizontalGroup(
+            jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTableLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelTableLayout.setVerticalGroup(
+            jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
         );
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("  Calibration laboratory");
+        jLabel1.setText("  Laboratory");
         jLabel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel1.setFocusable(false);
         jLabel1.setMinimumSize(new java.awt.Dimension(200, 18));
@@ -149,49 +150,49 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         jLabel3.setMinimumSize(new java.awt.Dimension(200, 18));
         jLabel3.setPreferredSize(new java.awt.Dimension(108, 18));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelUserInputLayout = new javax.swing.GroupLayout(jPanelUserInput);
+        jPanelUserInput.setLayout(jPanelUserInputLayout);
+        jPanelUserInputLayout.setHorizontalGroup(
+            jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUserInputLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelUserInputLayout.createSequentialGroup()
+                        .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCBLaboratory, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanelUserInputLayout.createSequentialGroup()
                                 .addComponent(jCBSensorType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonPath, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonGetData, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanelUserInputLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                         .addComponent(jLabelPath, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        jPanelUserInputLayout.setVerticalGroup(
+            jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUserInputLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanelUserInputLayout.createSequentialGroup()
+                        .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBLaboratory, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCBSensorType, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonPath, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButtonGetData, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelUserInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPath, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -204,17 +205,17 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanelUserInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelUserInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -228,7 +229,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             jCBSensorType.setEnabled(false);
             jButtonGetData.setEnabled(false);
             jCBSensorType.addItem("Select sensor");
-            path="";
+            path = "";
             jLabelPath.setText(path);
         } else if (laboratorySelection == 1) {
             jCBSensorType.removeAllItems();
@@ -253,11 +254,11 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
 
     private void jCBSensorTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBSensorTypeActionPerformed
         sensorSelection = jCBSensorType.getSelectedIndex();
-        
-        if(sensorSelection!=0)
-        jButtonPath.setEnabled(true);
-        else {
-            path="";
+
+        if (sensorSelection != 0) {
+            jButtonPath.setEnabled(true);
+        } else {
+            path = "";
             jLabelPath.setText(path);
             jButtonPath.setEnabled(false);
             jButtonGetData.setEnabled(false);
@@ -269,8 +270,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPathActionPerformed
 
     private void jButtonGetDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGetDataActionPerformed
-        defaultTableModel.setNumRows(0);  
-        DataParserSelection selectedDataParser = new DataParserSelection(laboratorySelection, sensorSelection, path);
+        defaultTableModel.setNumRows(0);
+        DataParserSelector selectedDataParser = new DataParserSelector(laboratorySelection, sensorSelection, path);
         DataParser dataparser = selectedDataParser.selectParser();
         populateTable(dataparser);
         resetUserInput();
@@ -280,12 +281,12 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(GUICalibrationCertificates.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(!certificateErrorPaths.isEmpty()){
+        if (!certificateErrorPaths.isEmpty()) {
             String errorPaths = "";
-            for(String eP : certificateErrorPaths){
+            for (String eP : certificateErrorPaths) {
                 errorPaths = errorPaths + eP + "\n";
             }
-            JOptionPane.showMessageDialog(null, "The following files could not be parsed:\n" + errorPaths);
+            JOptionPane.showMessageDialog(jPanelTable, "The following files could not be parsed:\n" + errorPaths);
         }
     }//GEN-LAST:event_jButtonGetDataActionPerformed
 
@@ -335,21 +336,16 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         Object[] sensorsForTable;
 
         //Order in table: "Measurand", "laboratory" "Serial", "Slope", "Offset", "CalDate", "Result"
-        if (sensorList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "The list is empty. Please check"
-                    + " the user inputs.");
-        } else {
+        for (Sensor a : sensorList) {
+            sensorsForTable = new Object[]{a.getMeasurand(), a.getLaboratory(),
+                a.getSerialNumber(), a.getSlope(), a.getOffset(),
+                a.getCalibrationDate(), a.getUncertainty()};
+            defaultTableModel.addRow(sensorsForTable);
 
-            for (Sensor a : sensorList) {
-                sensorsForTable = new Object[]{a.getMeasurand(), a.getLaboratory(), 
-                    a.getSerialNumber(), a.getSlope(), a.getOffset(), 
-                    a.getCalibrationDate(), a.getUncertainty()};
-                defaultTableModel.addRow(sensorsForTable);
-            }
         }
-               
+
     }
-    
+
     private void fileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -361,11 +357,11 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             jButtonGetData.setEnabled(true);
         }
     }
-    
-    private void resetUserInput(){
+
+    private void resetUserInput() {
         jCBLaboratory.setSelectedIndex(0);
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGetData;
@@ -376,8 +372,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelPath;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelTable;
+    private javax.swing.JPanel jPanelUserInput;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCalData;
     // End of variables declaration//GEN-END:variables
@@ -385,6 +381,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     private void configureApplicationWindow() {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Calibration Certificate Data Extractor");
+        ImageIcon icon = new ImageIcon("src\\resources\\icono.png");
+        this.setIconImage(icon.getImage());
         this.pack();
         this.setLocationRelativeTo(null);
     }

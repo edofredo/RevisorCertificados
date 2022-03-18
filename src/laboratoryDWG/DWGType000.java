@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package certificados.Anemometros;
+package laboratoryDWG;
 
-import pdfManagers.PDFManager;
+import dataExtractorService.PDFManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
-import certificates.General.DataParser;
+import dataExtractorService.DataParser;
 
 /**
  *
@@ -25,6 +25,7 @@ public class DWGType000 implements DataParser {
        
     private Sensor sensor;
     private ArrayList<Sensor> sensorList = new ArrayList<>();
+    private ArrayList<String> certificateErrorPaths = new ArrayList<>();
     
     private PDFManager pdfManager;
     private String absolutePath;
@@ -36,12 +37,12 @@ public class DWGType000 implements DataParser {
 
         File file = new File(guiPath);
         String[] pathNames = file.list();
-        for (String s : pathNames) {
+        for (String fileName : pathNames) {
 
             sensor = new Sensor();
             pdfManager = new PDFManager();
             absolutePath = file.getAbsolutePath() + File.separator;
-            filePath = file.getAbsolutePath() + File.separator + s;
+            filePath = file.getAbsolutePath() + File.separator + fileName;
             pdfManager.setFilePath(filePath);
 
             try {
@@ -72,6 +73,7 @@ public class DWGType000 implements DataParser {
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (Exception e) {
+                certificateErrorPaths.add(fileName);
                 System.out.println("Certificate type error: " + e.getMessage());
             }
             
@@ -131,6 +133,11 @@ public class DWGType000 implements DataParser {
 
     public void setGuiPath(String guiPath) {
         this.guiPath = guiPath;
+    }
+
+    @Override
+    public ArrayList<String> getCertificateErrorPaths() throws IOException {
+        return certificateErrorPaths;
     }
     
 }

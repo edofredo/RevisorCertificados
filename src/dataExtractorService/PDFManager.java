@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pdfManagers;
+package dataExtractorService;
 
 import java.awt.geom.Rectangle2D;
 import java.io.File;
