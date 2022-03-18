@@ -25,6 +25,7 @@ public class IDRType000 implements DataParser {
 
     private Sensor sensor;
     private ArrayList<Sensor> sensorList = new ArrayList<>();
+    private ArrayList<String> certificateErrorPaths = new ArrayList<>();
 
     private PDFManager pdfManager;
     private String absolutePath;
@@ -73,6 +74,7 @@ public class IDRType000 implements DataParser {
                 Path original = Paths.get(filePath);
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
             } catch (Exception e) {
+                certificateErrorPaths.add(filePath);
                 System.out.println("Certificate type error: " + e.getMessage());
             }
         }
@@ -128,6 +130,11 @@ public class IDRType000 implements DataParser {
 
     public void setGuiPath(String guiPath) {
         this.guiPath = guiPath;
+    }
+
+    @Override
+    public ArrayList<String> getCertificateErrorPaths() throws IOException {
+        return certificateErrorPaths;
     }
 
 }

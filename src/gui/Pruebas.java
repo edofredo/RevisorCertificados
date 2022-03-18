@@ -20,6 +20,7 @@ public class Pruebas {
     /**
      * @param args the command line arguments
      */
+/*
     public static void main(String[] args) {
         DataParser d = new DWGType400();
         try {
@@ -28,5 +29,5 @@ public class Pruebas {
             Logger.getLogger(Pruebas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+*/  
 }

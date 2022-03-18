@@ -15,4 +15,5 @@ import model.Sensor;
  */
 public interface DataParser {
     public ArrayList<Sensor> parser() throws IOException;
+    public ArrayList<String> getCertificateErrorPaths() throws IOException;
 }

@@ -36,7 +36,6 @@ public class DWGType000 implements DataParser {
 
         File file = new File(guiPath);
         String[] pathNames = file.list();
-
         for (String s : pathNames) {
 
             sensor = new Sensor();

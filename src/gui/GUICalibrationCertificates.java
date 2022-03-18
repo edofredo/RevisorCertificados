@@ -40,8 +40,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     public GUICalibrationCertificates() {
         initComponents();
         defaultTableModel = (DefaultTableModel) jTableCalData.getModel();
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setTitle("Certificate Data Extractor ");
+        configureApplicationWindow();
         //DataParser sensor = new AC6THLufftWs300();
         //populateTable(sensor);
         
@@ -275,6 +274,19 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         DataParser dataparser = selectedDataParser.selectParser();
         populateTable(dataparser);
         resetUserInput();
+        ArrayList<String> certificateErrorPaths = new ArrayList<>();
+        try {
+            certificateErrorPaths = dataparser.getCertificateErrorPaths();
+        } catch (IOException ex) {
+            Logger.getLogger(GUICalibrationCertificates.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!certificateErrorPaths.isEmpty()){
+            String errorPaths = "";
+            for(String eP : certificateErrorPaths){
+                errorPaths = errorPaths + eP + "\n";
+            }
+            JOptionPane.showMessageDialog(null, "The following files could not be parsed:\n" + errorPaths);
+        }
     }//GEN-LAST:event_jButtonGetDataActionPerformed
 
     /**
@@ -369,4 +381,11 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCalData;
     // End of variables declaration//GEN-END:variables
+
+    private void configureApplicationWindow() {
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setTitle("Calibration Certificate Data Extractor");
+        this.pack();
+        this.setLocationRelativeTo(null);
+    }
 }
