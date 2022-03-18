@@ -21,16 +21,16 @@ import certificates.General.DataParser;
  *
  * @author CRA
  */
-public class IDRType000 implements DataParser {
-
+public class DWGType400 implements DataParser {
+       
     private Sensor sensor;
     private ArrayList<Sensor> sensorList = new ArrayList<>();
-
+    
     private PDFManager pdfManager;
     private String absolutePath;
     private String filePath;
     private String guiPath;
-
+    
     @Override
     public ArrayList<Sensor> parser() throws IOException {
 
@@ -47,39 +47,43 @@ public class IDRType000 implements DataParser {
 
             try {
 
-                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 350, 400).split("\n");
+                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 300, 500).split("\n");
 
-                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 350, 50, 230).split("\n");
+                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 170, 220, 50, 400).split("\n");
                 Arrays.sort(tablaUncert);
-
-                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 160, 300, 80, 80).split("\n");
-
+                
+                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 300, 400, 150, 120).split("\n");
+               
                 sensor.setMeasurand("Windspeed");
-                sensor.setLaboratory(datos[4].substring(54, 63).trim());
-                sensor.setSerialNumber(datos[15].substring(14, 23).trim());
-                sensor.setCalibrationDate(datos[20].substring(20, 37).trim());
+                sensor.setLaboratory(datos[2].substring(0, 18).trim());
+                sensor.setSerialNumber(datos[14].substring(14, 23).trim());
+                sensor.setCalibrationDate(datos[24].substring(20, 31).trim());
                 sensor.setSlope(tablaSlopOff[0].substring(0, 7));
-                sensor.setOffset(tablaSlopOff[1].substring(0, 7));
-                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
+                sensor.setOffset(tablaSlopOff[1].substring(0, 6));
+                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);                
 
                 sensorList.add(sensor);
-
-                String newPath = absolutePath + "IDR" + File.separator;
+                String newPath = absolutePath+"DWG"+File.separator;
                 File newFolder = new File(newPath);
-                if (!newFolder.exists()) {
+                if (!newFolder.exists()){
                     newFolder.mkdirs();
                 }
-                Path copy = Paths.get(newPath + "IDR_" + sensor.getSerialNumber() + "_Type000.pdf");
+                Path copy = Paths.get(newPath + "DWG_" + sensor.getSerialNumber() + "_Type000.pdf");
                 Path original = Paths.get(filePath);
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
+
             } catch (Exception e) {
                 System.out.println("Certificate type error: " + e.getMessage());
             }
+            
         }
+
         for (Sensor s : sensorList) {
             System.out.println(s.getSerialNumber());
         }
+
         return sensorList;
+
     }
 
     public Sensor getSensor() {
@@ -129,5 +133,5 @@ public class IDRType000 implements DataParser {
     public void setGuiPath(String guiPath) {
         this.guiPath = guiPath;
     }
-
+    
 }

@@ -41,6 +41,7 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         initComponents();
         defaultTableModel = (DefaultTableModel) jTableCalData.getModel();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setTitle("Certificate Data Extractor ");
         //DataParser sensor = new AC6THLufftWs300();
         //populateTable(sensor);
         
@@ -323,8 +324,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
 
         //Order in table: "Measurand", "laboratory" "Serial", "Slope", "Offset", "CalDate", "Result"
         if (sensorList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "The list is empty. Check that"
-                    + "the calibration certificates match the user input");
+            JOptionPane.showMessageDialog(this, "The list is empty. Please check"
+                    + " the user inputs.");
         } else {
 
             for (Sensor a : sensorList) {

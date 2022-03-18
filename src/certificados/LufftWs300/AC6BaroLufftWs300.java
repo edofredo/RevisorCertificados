@@ -44,46 +44,53 @@ public class AC6BaroLufftWs300 implements DataParser {
             filePath = file.getAbsolutePath() + File.separator + s;
             pdfManager.setFilePath(filePath);
 
-            String[] calibrationData = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 0, 500, 600).split("\n");
+            try {
 
-            double[] incertidumbre = new double[5];
-            String[] datosIncertidumbre = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 350, 300, 100, 120).split("\n");
-            for (int i = 0; i <= datosIncertidumbre.length - 1; i++) {
-                double dato = Double.parseDouble(datosIncertidumbre[i].replace(",", "."));
-                incertidumbre[i] = dato;
+                String[] calibrationData = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 0, 500, 600).split("\n");
+
+                double[] incertidumbre = new double[5];
+                String[] datosIncertidumbre = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 350, 300, 100, 120).split("\n");
+                for (int i = 0; i <= datosIncertidumbre.length - 1; i++) {
+                    double dato = Double.parseDouble(datosIncertidumbre[i].replace(",", "."));
+                    incertidumbre[i] = dato;
+                }
+
+                double[] correccion = new double[5];
+                String[] datosCorreccion = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 300, 50, 140).split("\n");
+                for (int i = 0; i <= datosCorreccion.length - 1; i++) {
+                    double dato = Math.abs(Double.parseDouble(datosCorreccion[i].replace(",", ".")));
+                    correccion[i] = dato;
+                }
+
+                double[] resultado = new double[5];
+                for (int i = 0; i <= incertidumbre.length - 1; i++) {
+                    resultado[i] = correccion[i] + incertidumbre[i];
+                }
+                Arrays.sort(resultado);
+
+                sensor.setMeasurand("Barometer");
+                sensor.setLaboratory(calibrationData[7].substring(0, 3).trim());
+                sensor.setSerialNumber(calibrationData[19].substring(15, 32).trim());
+                sensor.setOffset("0");
+                sensor.setCalibrationDate(calibrationData[24].substring(21, 42).trim());
+                sensor.setSlope("1");
+                sensor.setUncertainty(resultado[4]);
+
+                sensorList.add(sensor);
+
+                String newPath = absolutePath + "AC6BaroLufft" + File.separator;
+                File newFolder = new File(newPath);
+                if (!newFolder.exists()) {
+                    newFolder.mkdirs();
+                }
+                Path copy = Paths.get(newPath + "AC6_" + sensor.getSerialNumber() + "BaroLufftWs300.pdf");
+                Path original = Paths.get(filePath);
+                Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
+
+            } catch (Exception e) {
+                System.out.println("Certificate type error: " + e.getMessage());
             }
 
-            double[] correccion = new double[5];
-            String[] datosCorreccion = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 300, 50, 140).split("\n");
-            for (int i = 0; i <= datosCorreccion.length - 1; i++) {
-                double dato = Math.abs(Double.parseDouble(datosCorreccion[i].replace(",", ".")));
-                correccion[i] = dato;
-            }
-
-            double[] resultado = new double[5];
-            for (int i = 0; i <= incertidumbre.length - 1; i++) {
-                resultado[i] = correccion[i] + incertidumbre[i];
-            }
-            Arrays.sort(resultado);
-
-            sensor.setMeasurand("Barometer");
-            sensor.setLaboratory(calibrationData[7].substring(0, 3).trim());
-            sensor.setSerialNumber(calibrationData[19].substring(15, 32).trim());
-            sensor.setOffset("0");
-            sensor.setCalibrationDate(calibrationData[24].substring(21, 42).trim());
-            sensor.setSlope("1");
-            sensor.setUncertainty(resultado[4]);
-
-            sensorList.add(sensor);
-
-            String newPath = absolutePath + "AC6BaroLufft" + File.separator;
-            File newFolder = new File(newPath);
-            if (!newFolder.exists()) {
-                newFolder.mkdirs();
-            }
-            Path copy = Paths.get(newPath + "AC6_" + sensor.getSerialNumber() + "BaroLufftWs300.pdf");
-            Path original = Paths.get(filePath);
-            Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
         }
         return sensorList;
     }

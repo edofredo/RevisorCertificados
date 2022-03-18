@@ -6,6 +6,7 @@
 package certificates.General;
 
 import certificados.Anemometros.DWGType000;
+import certificados.Anemometros.DWGType400;
 import certificados.Anemometros.IDRType000;
 import certificados.LufftWs300.AC6BaroLufftWs300;
 import certificados.LufftWs300.AC6THLufftWs300;
@@ -36,6 +37,10 @@ public class DataParserSelection {
             dataparser = (DataParser)parser;
         } else if (laboratorySelection==2 & sensorSelection == 1){
             DWGType000 parser = new DWGType000();
+            parser.setGuiPath(path);
+            dataparser = (DataParser)parser;
+        }   else if (laboratorySelection==2 & sensorSelection == 2){
+            DWGType400 parser = new DWGType400();
             parser.setGuiPath(path);
             dataparser = (DataParser)parser;
         } else if (laboratorySelection==3 & sensorSelection == 1){

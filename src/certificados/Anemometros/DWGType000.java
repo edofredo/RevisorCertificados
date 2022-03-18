@@ -73,7 +73,7 @@ public class DWGType000 implements DataParser {
                 Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
 
             } catch (Exception e) {
-                System.out.println("Certificate type error" + e.getMessage());
+                System.out.println("Certificate type error: " + e.getMessage());
             }
             
         }
