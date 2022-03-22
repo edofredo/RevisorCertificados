@@ -273,8 +273,9 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         defaultTableModel.setNumRows(0);
         DataParserSelector selectedDataParser = new DataParserSelector(laboratorySelection, sensorSelection, path);
         DataParser dataparser = selectedDataParser.selectParser();
-        populateTable(dataparser);
+        int dataParserResult = populateTable(dataparser);
         resetUserInput();
+        
         ArrayList<String> certificateErrorPaths = new ArrayList<>();
         try {
             certificateErrorPaths = dataparser.getCertificateErrorPaths();
@@ -288,6 +289,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(jPanelTable, "The following files could not be parsed:\n\n" + errorPaths +"\n"
             + "Please check concordancy between user inputs and files to parse.");
+        } else if (certificateErrorPaths.isEmpty() & dataParserResult == 0){
+            JOptionPane.showMessageDialog(jPanelTable, "No files to parse.");
         }
     }//GEN-LAST:event_jButtonGetDataActionPerformed
 
@@ -326,14 +329,14 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         });
     }
 
-    private void populateTable(DataParser certificateData) {
+    private int populateTable(DataParser certificateData) {
+        int dataParserResult = 0;
         ArrayList<Sensor> sensorList = null;
         try {
             sensorList = certificateData.parser();
         } catch (IOException ex) {
             Logger.getLogger(GUICalibrationCertificates.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         Object[] sensorsForTable;
 
         //Order in table: "Measurand", "laboratory" "Serial", "Slope", "Offset", "CalDate", "Result"
@@ -342,10 +345,12 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
                 a.getSerialNumber(), a.getSlope(), a.getOffset(),
                 a.getCalibrationDate(), a.getUncertainty()};
             defaultTableModel.addRow(sensorsForTable);
-
+            dataParserResult++;
         }
 
+        return dataParserResult;
     }
+    
 
     private void fileChooser() {
         JFileChooser fileChooser = new JFileChooser();

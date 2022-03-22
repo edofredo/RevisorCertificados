@@ -17,8 +17,6 @@ import java.util.Arrays;
 import model.Sensor;
 import dataExtractorService.DataParser;
 import dataExtractorService.DateFormater;
-import java.util.Date;
-import javafx.scene.input.DataFormat;
 
 /**
  *
@@ -36,7 +34,7 @@ public class IDRType000 implements DataParser {
     private String guiPath;
 
     @Override
-    public ArrayList<Sensor> parser() throws IOException {
+    public ArrayList<Sensor> parser() throws IOException{
 
         File file = new File(guiPath);
         String[] pathNames = file.list();
@@ -47,49 +45,48 @@ public class IDRType000 implements DataParser {
             pdfManager = new PDFManager();
             absolutePath = file.getAbsolutePath() + File.separator;
             filePath = file.getAbsolutePath() + File.separator + fileName;
-            pdfManager.setFilePath(filePath);
+            if (filePath.endsWith(".pdf")) {
+                pdfManager.setFilePath(filePath);
 
-            try {
+                try {
 
-                String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 350, 400).split("\n");
+                    String[] datos = pdfManager.getTextUsingPositionsUsingPdf(filePath, -1, 0, 100, 350, 400).split("\n");
 
-                String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 350, 50, 230).split("\n");
-                Arrays.sort(tablaUncert);
+                    String[] tablaUncert = pdfManager.getTextUsingPositionsUsingPdf(filePath, 1, 300, 350, 50, 230).split("\n");
+                    Arrays.sort(tablaUncert);
 
-                String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 160, 300, 80, 80).split("\n");
+                    String[] tablaSlopOff = pdfManager.getTextUsingPositionsUsingPdf(filePath, 2, 160, 300, 80, 80).split("\n");
 
-                sensor.setMeasurand("Windspeed");
-                sensor.setLaboratory(datos[4].substring(54, 63).trim());
-                if(!sensor.getLaboratory().equalsIgnoreCase("IDR/UPM")){
-                    throw new Exception("Not a IDR certificate.");
+                    sensor.setMeasurand("Windspeed");
+                    sensor.setLaboratory(datos[4].substring(54, 63).trim());
+                    if (!sensor.getLaboratory().equalsIgnoreCase("IDR/UPM")) {
+                        throw new Exception("Not a IDR certificate.");
+                    }
+                    sensor.setModel(datos[13].substring(16, 20).trim());
+                    if (!sensor.getModel().equalsIgnoreCase(".000")) {
+                        throw new Exception("Not a type .000");
+                    }
+                    sensor.setSerialNumber(datos[15].substring(14, 23).trim());
+                    sensor.setCalibrationDate(DateFormater.formatIdrToStandart(datos[20].substring(20, 37).trim()));
+                    sensor.setSlope(tablaSlopOff[0].substring(0, 7));
+                    sensor.setOffset(tablaSlopOff[1].substring(0, 7));
+                    sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
+
+                    sensorList.add(sensor);
+
+                    String newPath = absolutePath + "IDR" + File.separator;
+                    File newFolder = new File(newPath);
+                    if (!newFolder.exists()) {
+                        newFolder.mkdirs();
+                    }
+                    Path copy = Paths.get(newPath + "IDR_" + sensor.getSerialNumber() + "_Type000.pdf");
+                    Path original = Paths.get(filePath);
+                    Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    certificateErrorPaths.add(fileName);
+                    System.out.println("Certificate type error: " + e.getMessage());
                 }
-                sensor.setModel(datos[13].substring(16, 20).trim());
-                if(!sensor.getModel().equalsIgnoreCase(".000")){
-                    throw new Exception("Not a type .000");
-                }
-                sensor.setSerialNumber(datos[15].substring(14, 23).trim());
-                sensor.setCalibrationDate(DateFormater.formatIdrToStandart(datos[20].substring(20, 37).trim()));
-                sensor.setSlope(tablaSlopOff[0].substring(0, 7));
-                sensor.setOffset(tablaSlopOff[1].substring(0, 7));
-                sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
-
-                sensorList.add(sensor);
-
-                String newPath = absolutePath + "IDR" + File.separator;
-                File newFolder = new File(newPath);
-                if (!newFolder.exists()) {
-                    newFolder.mkdirs();
-                }
-                Path copy = Paths.get(newPath + "IDR_" + sensor.getSerialNumber() + "_Type000.pdf");
-                Path original = Paths.get(filePath);
-                Files.copy(original, copy, StandardCopyOption.REPLACE_EXISTING);
-            } catch (Exception e) {
-                certificateErrorPaths.add(fileName);
-                System.out.println("Certificate type error: " + e.getMessage());
-            }
-        }
-        for (Sensor s : sensorList) {
-            System.out.println(s.getSerialNumber());
+            } 
         }
         return sensorList;
     }
