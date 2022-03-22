@@ -41,9 +41,6 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
         initComponents();
         defaultTableModel = (DefaultTableModel) jTableCalData.getModel();
         configureApplicationWindow();
-        //DataParser sensor = new AC6THLufftWs300();
-        //populateTable(sensor);
-
     }
 
     /**

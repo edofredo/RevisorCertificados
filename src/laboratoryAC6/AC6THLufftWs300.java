@@ -61,7 +61,7 @@ public class AC6THLufftWs300 implements DataParser {
                     }
                     sensor.setSerialNumber(calibrationData[21].substring(15, 32).trim());
                     sensor.setOffset("0");
-                    sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[26].substring(21, 42).trim()));
+                    sensor.setCalibrationDate(DateFormater.formatAc6ToStandart(calibrationData[26].substring(21, 42).trim()));
                     sensor.setSlope("1");
 
                     //----Data for Temperature -------------o------------------------------
@@ -127,7 +127,7 @@ public class AC6THLufftWs300 implements DataParser {
                     sensor.setLaboratory(calibrationData[8].substring(0, 3).trim());
                     sensor.setSerialNumber(calibrationData[21].substring(15, 32).trim());
                     sensor.setOffset("0");
-                    sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[26].substring(21, 42).trim()));
+                    sensor.setCalibrationDate(DateFormater.formatAc6ToStandart(calibrationData[26].substring(21, 42).trim()));
                     sensor.setSlope("1");
                     sensor.setUncertainty(resultadoH[3]);
                     sensorList.add(sensor);

@@ -82,7 +82,7 @@ public class AC6BaroLufftWs300 implements DataParser {
                     }
                     sensor.setSerialNumber(calibrationData[19].substring(15, 32).trim());
                     sensor.setOffset("0");
-                    sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[24].substring(21, 42).trim()));
+                    sensor.setCalibrationDate(DateFormater.formatAc6ToStandart(calibrationData[24].substring(21, 42).trim()));
                     sensor.setSlope("1");
                     sensor.setUncertainty(resultado[4]);
 

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class DateFormater {
     
-    public static String formatAc6ToEN(String date){
+    public static String formatAc6ToStandart(String date){
         Date datePattern = null; 
         try {
             datePattern = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy",new Locale("es")).parse(date);
@@ -29,8 +29,22 @@ public class DateFormater {
         }
         DateFormat formato = DateFormat.getDateInstance(DateFormat.SHORT);
         String dateEN = formato.format(datePattern);
+        System.out.println(dateEN);
         String standartDate = formatDateToStandart(dateEN);
         return standartDate;
+    }
+    
+    private static String formatDateToStandart(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+        Date d = null;
+        try {
+            d = sdf.parse(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(DateFormater.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        sdf.applyPattern("yyyy-MM-dd");
+        String formatedDate = sdf.format(d);
+        return formatedDate;
     }
     
     public static String formatDwgToStandart(String date){
@@ -58,18 +72,4 @@ public class DateFormater {
         String formatedDate = sdf.format(d);
         return formatedDate;
     }
-    
-    private static String formatDateToStandart(String date){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-        Date d = null;
-        try {
-            d = sdf.parse(date);
-        } catch (ParseException ex) {
-            Logger.getLogger(DateFormater.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        sdf.applyPattern("yyyy-MM-dd");
-        String formatedDate = sdf.format(d);
-        return formatedDate;
-    }
-    
 }
