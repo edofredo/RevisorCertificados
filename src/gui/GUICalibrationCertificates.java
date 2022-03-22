@@ -286,7 +286,8 @@ public class GUICalibrationCertificates extends javax.swing.JFrame {
             for (String eP : certificateErrorPaths) {
                 errorPaths = errorPaths + eP + "\n";
             }
-            JOptionPane.showMessageDialog(jPanelTable, "The following files could not be parsed:\n" + errorPaths);
+            JOptionPane.showMessageDialog(jPanelTable, "The following files could not be parsed:\n\n" + errorPaths +"\n"
+            + "Please check concordancy between user inputs and files to parse.");
         }
     }//GEN-LAST:event_jButtonGetDataActionPerformed
 

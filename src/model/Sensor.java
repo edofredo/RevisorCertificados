@@ -16,6 +16,7 @@ public class Sensor {
     private String measurand;
     private String laboratory;
     private String serialNumber;
+    private String model;
     private String slope;
     private String offset;
     private String calibrationDate;
@@ -72,6 +73,14 @@ public class Sensor {
 
     public void setSerialNumber(String serial) {
         this.serialNumber = serial;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getCalibrationDate() {

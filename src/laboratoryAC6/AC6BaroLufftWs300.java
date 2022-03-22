@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
 import dataExtractorService.DataParser;
+import dataExtractorService.DateFormater;
 
 /**
  *
@@ -71,9 +72,16 @@ public class AC6BaroLufftWs300 implements DataParser {
 
                 sensor.setMeasurand("Barometer");
                 sensor.setLaboratory(calibrationData[7].substring(0, 3).trim());
+                if(!sensor.getLaboratory().equalsIgnoreCase("AC6")){
+                    throw new Exception("Not a AC6 certificate.");
+                }
+                sensor.setModel(calibrationData[17].substring(7, 16).trim());
+                if(!sensor.getModel().equalsIgnoreCase("WS300-UMB")){
+                    throw new Exception("Not a type WS300-UMB");
+                }
                 sensor.setSerialNumber(calibrationData[19].substring(15, 32).trim());
                 sensor.setOffset("0");
-                sensor.setCalibrationDate(calibrationData[24].substring(21, 42).trim());
+                sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[24].substring(21, 42).trim()));
                 sensor.setSlope("1");
                 sensor.setUncertainty(resultado[4]);
 
@@ -140,6 +148,5 @@ public class AC6BaroLufftWs300 implements DataParser {
      @Override
     public ArrayList<String> getCertificateErrorPaths() throws IOException {
         return certificateErrorPaths;
-    }
-    
+    }    
 }

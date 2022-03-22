@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
 import dataExtractorService.DataParser;
+import dataExtractorService.DateFormater;
 
 /**
  *
@@ -57,8 +58,15 @@ public class DWGType400 implements DataParser {
                
                 sensor.setMeasurand("Windspeed");
                 sensor.setLaboratory(datos[2].substring(0, 18).trim());
+                if(!sensor.getLaboratory().equalsIgnoreCase("Deutsche WindGuard")){
+                    throw new Exception("Not a DWG certificate.");
+                }
                 sensor.setSerialNumber(datos[14].substring(14, 23).trim());
-                sensor.setCalibrationDate(datos[24].substring(20, 31).trim());
+                sensor.setModel(datos[12].substring(14, 18).trim());
+                if(!sensor.getModel().equalsIgnoreCase(".400")){
+                    throw new Exception("Not a type .400");
+                }
+                sensor.setCalibrationDate(DateFormater.formatDwgToStandart(datos[24].substring(20, 31).trim()));
                 sensor.setSlope(tablaSlopOff[0].substring(0, 7));
                 sensor.setOffset(tablaSlopOff[1].substring(0, 6));
                 sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);                

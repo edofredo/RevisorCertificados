@@ -7,7 +7,15 @@ package gui;
 
 import laboratoryDWG.DWGType400;
 import dataExtractorService.DataParser;
+import dataExtractorService.DateFormater;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,14 +28,9 @@ public class Tests {
     /**
      * @param args the command line arguments
      */
-/*
+
     public static void main(String[] args) {
-        DataParser d = new DWGType400();
-        try {
-            d.parser();
-        } catch (IOException ex) {
-            Logger.getLogger(Tests.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-*/  
+        System.out.println(DateFormater.formatIdrToStandart("January 27, 2022"));
+                
+    }          
 }

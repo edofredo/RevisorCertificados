@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
 import dataExtractorService.DataParser;
+import dataExtractorService.DateFormater;
 
 /**
  *
@@ -50,9 +51,16 @@ public class AC6THLufftWs300 implements DataParser {
 
                 sensor.setMeasurand("Temperature");
                 sensor.setLaboratory(calibrationData[8].substring(0, 3).trim());
+                if(!sensor.getLaboratory().equalsIgnoreCase("AC6")){
+                    throw new Exception("Not a AC6 certificate.");
+                }
+                sensor.setModel(calibrationData[19].substring(7, 16).trim());
+                if(!sensor.getModel().equalsIgnoreCase("WS300-UMB")){
+                    throw new Exception("Not a type WS300-UMB");
+                }
                 sensor.setSerialNumber(calibrationData[21].substring(15, 32).trim());
                 sensor.setOffset("0");
-                sensor.setCalibrationDate(calibrationData[26].substring(21, 42).trim());
+                sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[26].substring(21, 42).trim()));
                 sensor.setSlope("1");
 
                 //----Data for Temperature -------------o------------------------------
@@ -118,7 +126,7 @@ public class AC6THLufftWs300 implements DataParser {
                 sensor.setLaboratory(calibrationData[8].substring(0, 3).trim());
                 sensor.setSerialNumber(calibrationData[21].substring(15, 32).trim());
                 sensor.setOffset("0");
-                sensor.setCalibrationDate(calibrationData[26].substring(21, 42).trim());
+                sensor.setCalibrationDate(DateFormater.formatAc6ToEN(calibrationData[26].substring(21, 42).trim()));
                 sensor.setSlope("1");
                 sensor.setUncertainty(resultadoH[3]);
                 sensorList.add(sensor);

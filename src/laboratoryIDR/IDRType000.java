@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import model.Sensor;
 import dataExtractorService.DataParser;
+import dataExtractorService.DateFormater;
+import java.util.Date;
+import javafx.scene.input.DataFormat;
 
 /**
  *
@@ -57,8 +60,15 @@ public class IDRType000 implements DataParser {
 
                 sensor.setMeasurand("Windspeed");
                 sensor.setLaboratory(datos[4].substring(54, 63).trim());
+                if(!sensor.getLaboratory().equalsIgnoreCase("IDR/UPM")){
+                    throw new Exception("Not a IDR certificate.");
+                }
+                sensor.setModel(datos[13].substring(16, 20).trim());
+                if(!sensor.getModel().equalsIgnoreCase(".000")){
+                    throw new Exception("Not a type .000");
+                }
                 sensor.setSerialNumber(datos[15].substring(14, 23).trim());
-                sensor.setCalibrationDate(datos[20].substring(20, 37).trim());
+                sensor.setCalibrationDate(DateFormater.formatIdrToStandart(datos[20].substring(20, 37).trim()));
                 sensor.setSlope(tablaSlopOff[0].substring(0, 7));
                 sensor.setOffset(tablaSlopOff[1].substring(0, 7));
                 sensor.setUncertainty(Double.parseDouble(tablaUncert[12]) / 2);
